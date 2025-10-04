@@ -1,0 +1,25 @@
+{
+  "name": "publication-nft-ethereum",
+  "version": "1.0.0",
+  "description": "Ethereum ERC-721 NFT smart contract for published works",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:localhost": "hardhat run scripts/deploy.js --network localhost",
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia"
+  },
+  "keywords": [
+    "ethereum",
+    "nft",
+    "erc721",
+    "hardhat",
+    "smart-contract"
+  ],
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.0"
+  }
+}
