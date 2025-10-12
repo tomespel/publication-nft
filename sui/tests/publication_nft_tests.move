@@ -23,9 +23,14 @@ module publication_nft::publication_nft_tests {
                 create_test_string(b"Test Book"),
                 create_test_string(b"Test Author"),
                 1234567890000,
-                create_test_string(b"978-0-123456-78-9"),
+                create_test_string(b"10.1000/test-doi"),
                 b"https://ipfs.io/ipfs/QmTest",
                 b"https://ipfs.io/ipfs/QmTestImage",
+                create_test_string(b"Test description"),
+                create_test_string(b"CC-BY-4.0"),
+                create_test_string(b"Computer Science"),
+                create_test_string(b"1.0"),
+                b"https://example.com/paper",
                 USER1,
                 ts::ctx(&mut scenario)
             );
@@ -37,9 +42,9 @@ module publication_nft::publication_nft_tests {
             let nft = ts::take_from_sender<PublicationNFT>(&scenario);
             
             assert!(publication_nft::title(&nft) == create_test_string(b"Test Book"), 0);
-            assert!(publication_nft::author(&nft) == create_test_string(b"Test Author"), 1);
+            assert!(publication_nft::authors(&nft) == create_test_string(b"Test Author"), 1);
             assert!(publication_nft::publication_date(&nft) == 1234567890000, 2);
-            assert!(publication_nft::isbn(&nft) == create_test_string(b"978-0-123456-78-9"), 3);
+            assert!(publication_nft::doi(&nft) == create_test_string(b"10.1000/test-doi"), 3);
             
             ts::return_to_sender(&scenario, nft);
         };
@@ -58,9 +63,14 @@ module publication_nft::publication_nft_tests {
                 create_test_string(b"Test Book"),
                 create_test_string(b"Test Author"),
                 1234567890000,
-                create_test_string(b"978-0-123456-78-9"),
+                create_test_string(b"10.1000/test-doi"),
                 b"https://ipfs.io/ipfs/QmTest",
                 b"https://ipfs.io/ipfs/QmTestImage",
+                create_test_string(b"Test description"),
+                create_test_string(b"CC-BY-4.0"),
+                create_test_string(b"Computer Science"),
+                create_test_string(b"1.0"),
+                b"https://example.com/paper",
                 USER1,
                 ts::ctx(&mut scenario)
             );
@@ -95,9 +105,14 @@ module publication_nft::publication_nft_tests {
                 create_test_string(b"Test Book"),
                 create_test_string(b"Test Author"),
                 1234567890000,
-                create_test_string(b"978-0-123456-78-9"),
+                create_test_string(b"10.1000/test-doi"),
                 b"https://ipfs.io/ipfs/QmTest",
                 b"https://ipfs.io/ipfs/QmTestImage",
+                create_test_string(b"Test description"),
+                create_test_string(b"CC-BY-4.0"),
+                create_test_string(b"Computer Science"),
+                create_test_string(b"1.0"),
+                b"https://example.com/paper",
                 USER1,
                 ts::ctx(&mut scenario)
             );

@@ -17,16 +17,21 @@ contract PublicationNFT is ERC721, ERC721URIStorage, Ownable {
 
     struct PublicationMetadata {
         string title;
-        string author;
+        string authors;
         uint256 publicationDate;
-        string isbn;
+        string doi;
+        string description;
+        string license;
+        string field;
+        string version;
+        string externalUrl;
     }
 
     event PublicationMinted(
         uint256 indexed tokenId,
         address indexed owner,
         string title,
-        string author
+        string authors
     );
 
     constructor(address initialOwner)
@@ -39,17 +44,27 @@ contract PublicationNFT is ERC721, ERC721URIStorage, Ownable {
      * @param to The address that will own the minted token
      * @param uri The token URI containing metadata
      * @param title The title of the publication
-     * @param author The author of the publication
+     * @param authors The authors of the publication
      * @param publicationDate The publication date (unix timestamp)
-     * @param isbn The ISBN of the publication
+     * @param doi The DOI of the publication
+     * @param description The description/abstract of the publication
+     * @param license The license of the publication
+     * @param field The field of study
+     * @param version The version of the publication
+     * @param externalUrl The external URL to the publication
      */
     function mintPublication(
         address to,
         string memory uri,
         string memory title,
-        string memory author,
+        string memory authors,
         uint256 publicationDate,
-        string memory isbn
+        string memory doi,
+        string memory description,
+        string memory license,
+        string memory field,
+        string memory version,
+        string memory externalUrl
     ) public onlyOwner returns (uint256) {
         uint256 tokenId = _nextTokenId++;
         _safeMint(to, tokenId);
@@ -57,12 +72,17 @@ contract PublicationNFT is ERC721, ERC721URIStorage, Ownable {
 
         publications[tokenId] = PublicationMetadata({
             title: title,
-            author: author,
+            authors: authors,
             publicationDate: publicationDate,
-            isbn: isbn
+            doi: doi,
+            description: description,
+            license: license,
+            field: field,
+            version: version,
+            externalUrl: externalUrl
         });
 
-        emit PublicationMinted(tokenId, to, title, author);
+        emit PublicationMinted(tokenId, to, title, authors);
 
         return tokenId;
     }

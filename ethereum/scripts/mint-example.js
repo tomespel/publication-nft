@@ -29,16 +29,29 @@ async function main() {
   const publicationData = {
     uri: "ipfs://QmExampleHash123",
     title: "Example Publication",
-    author: "John Doe",
+    authors: "John Doe",
     publicationDate: Math.floor(Date.now() / 1000),
-    isbn: "978-0-123456-78-9"
+    doi: "10.1000/example-doi",
+    description: "Example description",
+    license: "CC-BY-4.0",
+    field: "Computer Science",
+    version: "1.0",
+    externalUrl: "https://example.com/paper",
   };
 
   console.log("\nPublication Details:");
   console.log("  Title:", publicationData.title);
-  console.log("  Author:", publicationData.author);
-  console.log("  Date:", new Date(publicationData.publicationDate * 1000).toISOString());
-  console.log("  ISBN:", publicationData.isbn);
+  console.log("  Authors:", publicationData.authors);
+  console.log(
+    "  Date:",
+    new Date(publicationData.publicationDate * 1000).toISOString()
+  );
+  console.log("  DOI:", publicationData.doi);
+  console.log("  Description:", publicationData.description);
+  console.log("  License:", publicationData.license);
+  console.log("  Field:", publicationData.field);
+  console.log("  Version:", publicationData.version);
+  console.log("  External URL:", publicationData.externalUrl);
   console.log("  Metadata URI:", publicationData.uri);
 
   // Mint the NFT
@@ -47,9 +60,14 @@ async function main() {
     recipientAddress,
     publicationData.uri,
     publicationData.title,
-    publicationData.author,
+    publicationData.authors,
     publicationData.publicationDate,
-    publicationData.isbn
+    publicationData.doi,
+    publicationData.description,
+    publicationData.license,
+    publicationData.field,
+    publicationData.version,
+    publicationData.externalUrl
   );
 
   console.log("Transaction hash:", tx.hash);

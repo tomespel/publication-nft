@@ -22,7 +22,12 @@ async function main() {
       "Sample Publication",
       "John Doe",
       Math.floor(Date.now() / 1000),
-      "978-0-123456-78-9"
+      "10.1000/sample-doi",
+      "Sample description",
+      "CC-BY-4.0",
+      "Computer Science",
+      "1.0",
+      "https://example.com/paper"
     );
     await tx.wait();
     console.log("Sample NFT minted successfully!");

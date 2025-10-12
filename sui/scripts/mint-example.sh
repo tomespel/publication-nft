@@ -20,17 +20,27 @@ echo ""
 
 # Example publication data
 TITLE="The Art of Computer Programming"
-AUTHOR="Donald Knuth"
+AUTHORS="Donald Knuth"
 PUBLICATION_DATE=1234567890000
-ISBN="978-0-201-89683-1"
+DOI="10.1000/art-of-programming"
 METADATA_URL="https://ipfs.io/ipfs/QmExampleMetadataHash"
 IMAGE_URL="https://ipfs.io/ipfs/QmExampleImageHash"
+DESCRIPTION="A comprehensive guide to computer programming algorithms and data structures."
+LICENSE="CC-BY-4.0"
+FIELD="Computer Science"
+VERSION="1.0"
+EXTERNAL_URL="https://example.com/paper"
 
 echo "Publication Details:"
 echo "  Title: $TITLE"
-echo "  Author: $AUTHOR"
+echo "  Authors: $AUTHORS"
 echo "  Publication Date: $PUBLICATION_DATE"
-echo "  ISBN: $ISBN"
+echo "  DOI: $DOI"
+echo "  Description: $DESCRIPTION"
+echo "  License: $LICENSE"
+echo "  Field: $FIELD"
+echo "  Version: $VERSION"
+echo "  External URL: $EXTERNAL_URL"
 echo "  Metadata URL: $METADATA_URL"
 echo "  Image URL: $IMAGE_URL"
 echo ""
@@ -43,11 +53,16 @@ sui client call \
   --function mint \
   --args \
     "$TITLE" \
-    "$AUTHOR" \
+    "$AUTHORS" \
     "$PUBLICATION_DATE" \
-    "$ISBN" \
+    "$DOI" \
     "$METADATA_URL" \
     "$IMAGE_URL" \
+    "$DESCRIPTION" \
+    "$LICENSE" \
+    "$FIELD" \
+    "$VERSION" \
+    "$EXTERNAL_URL" \
     "$RECIPIENT_ADDRESS" \
   --gas-budget 10000000
 

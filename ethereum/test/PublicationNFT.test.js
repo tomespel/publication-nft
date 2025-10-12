@@ -29,22 +29,32 @@ describe("PublicationNFT", function () {
     it("Should mint a new publication NFT", async function () {
       const uri = "ipfs://QmTestHash";
       const title = "Test Book";
-      const author = "Test Author";
+      const authors = "Test Author";
       const publicationDate = Math.floor(Date.now() / 1000);
-      const isbn = "978-0-123456-78-9";
+      const doi = "10.1000/test-doi";
+      const description = "Test description";
+      const license = "CC-BY-4.0";
+      const field = "Computer Science";
+      const version = "1.0";
+      const externalUrl = "https://example.com/paper";
 
       await expect(
         publicationNFT.mintPublication(
           addr1.address,
           uri,
           title,
-          author,
+          authors,
           publicationDate,
-          isbn
+          doi,
+          description,
+          license,
+          field,
+          version,
+          externalUrl
         )
       )
         .to.emit(publicationNFT, "PublicationMinted")
-        .withArgs(0, addr1.address, title, author);
+        .withArgs(0, addr1.address, title, authors);
 
       expect(await publicationNFT.ownerOf(0)).to.equal(addr1.address);
       expect(await publicationNFT.tokenURI(0)).to.equal(uri);
@@ -53,37 +63,62 @@ describe("PublicationNFT", function () {
     it("Should store publication metadata correctly", async function () {
       const uri = "ipfs://QmTestHash";
       const title = "Test Book";
-      const author = "Test Author";
+      const authors = "Test Author";
       const publicationDate = Math.floor(Date.now() / 1000);
-      const isbn = "978-0-123456-78-9";
+      const doi = "10.1000/test-doi";
+      const description = "Test description";
+      const license = "CC-BY-4.0";
+      const field = "Computer Science";
+      const version = "1.0";
+      const externalUrl = "https://example.com/paper";
 
       await publicationNFT.mintPublication(
         addr1.address,
         uri,
         title,
-        author,
+        authors,
         publicationDate,
-        isbn
+        doi,
+        description,
+        license,
+        field,
+        version,
+        externalUrl
       );
 
       const publication = await publicationNFT.getPublication(0);
       expect(publication.title).to.equal(title);
-      expect(publication.author).to.equal(author);
+      expect(publication.authors).to.equal(authors);
       expect(publication.publicationDate).to.equal(publicationDate);
-      expect(publication.isbn).to.equal(isbn);
+      expect(publication.doi).to.equal(doi);
+      expect(publication.description).to.equal(description);
+      expect(publication.license).to.equal(license);
+      expect(publication.field).to.equal(field);
+      expect(publication.version).to.equal(version);
+      expect(publication.externalUrl).to.equal(externalUrl);
     });
 
     it("Should only allow owner to mint", async function () {
       await expect(
-        publicationNFT.connect(addr1).mintPublication(
-          addr2.address,
-          "ipfs://QmTestHash",
-          "Test Book",
-          "Test Author",
-          Math.floor(Date.now() / 1000),
-          "978-0-123456-78-9"
-        )
-      ).to.be.revertedWithCustomError(publicationNFT, "OwnableUnauthorizedAccount");
+        publicationNFT
+          .connect(addr1)
+          .mintPublication(
+            addr2.address,
+            "ipfs://QmTestHash",
+            "Test Book",
+            "Test Author",
+            Math.floor(Date.now() / 1000),
+            "10.1000/test-doi",
+            "Test description",
+            "CC-BY-4.0",
+            "Computer Science",
+            "1.0",
+            "https://example.com/paper"
+          )
+      ).to.be.revertedWithCustomError(
+        publicationNFT,
+        "OwnableUnauthorizedAccount"
+      );
     });
   });
 
@@ -96,16 +131,22 @@ describe("PublicationNFT", function () {
         "Test Book",
         "Test Author",
         Math.floor(Date.now() / 1000),
-        "978-0-123456-78-9"
+        "10.1000/test-doi",
+        "Test description",
+        "CC-BY-4.0",
+        "Computer Science",
+        "1.0",
+        "https://example.com/paper"
       );
 
       expect(await publicationNFT.tokenURI(0)).to.equal(uri);
     });
 
     it("Should revert for non-existent token", async function () {
-      await expect(
-        publicationNFT.tokenURI(999)
-      ).to.be.revertedWithCustomError(publicationNFT, "ERC721NonexistentToken");
+      await expect(publicationNFT.tokenURI(999)).to.be.revertedWithCustomError(
+        publicationNFT,
+        "ERC721NonexistentToken"
+      );
     });
   });
 });
