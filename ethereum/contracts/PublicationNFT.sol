@@ -16,14 +16,16 @@ contract PublicationNFT is ERC721, ERC721URIStorage, Ownable {
     mapping(uint256 => PublicationMetadata) public publications;
 
     struct PublicationMetadata {
+        uint32 publicationDate;
+        bytes32 field;
+        bytes32 version;
         string title;
         string authors;
-        uint256 publicationDate;
         string doi;
+        string url;
+        string imageUrl;
         string description;
         string license;
-        string field;
-        string version;
         string externalUrl;
     }
 
@@ -40,17 +42,45 @@ contract PublicationNFT is ERC721, ERC721URIStorage, Ownable {
     {}
 
     /**
+     * @dev Convert string to bytes32 (reverts if string is longer than 32 bytes)
+     */
+    function stringToBytes32(string memory source) internal pure returns (bytes32 result) {
+        assembly {
+            let len := mload(source)
+            if gt(len, 32) { revert(0, 0) }
+            result := mload(add(source, 32))
+        }
+    }
+
+    /**
+     * @dev Convert bytes32 to string
+     */
+    function bytes32ToString(bytes32 _bytes32) internal pure returns (string memory) {
+        uint8 i = 0;
+        while (i < 32 && _bytes32[i] != 0) {
+            i++;
+        }
+        bytes memory bytesArray = new bytes(i);
+        for (i = 0; i < 32 && _bytes32[i] != 0; i++) {
+            bytesArray[i] = _bytes32[i];
+        }
+        return string(bytesArray);
+    }
+
+    /**
      * @dev Mint a new publication NFT
      * @param to The address that will own the minted token
-     * @param uri The token URI containing metadata
+     * @param uri The metadata URI (IPFS or HTTP)
      * @param title The title of the publication
      * @param authors The authors of the publication
-     * @param publicationDate The publication date (unix timestamp)
+     * @param publicationDate The publication date (unix timestamp in seconds, fits in uint32)
      * @param doi The DOI of the publication
+     * @param url The URL for the publication metadata
+     * @param imageUrl The image URL for the publication cover
      * @param description The description/abstract of the publication
      * @param license The license of the publication
-     * @param field The field of study
-     * @param version The version of the publication
+     * @param field The field of study (max 32 chars)
+     * @param version The version of the publication (max 32 chars)
      * @param externalUrl The external URL to the publication
      */
     function mintPublication(
@@ -58,14 +88,16 @@ contract PublicationNFT is ERC721, ERC721URIStorage, Ownable {
         string memory uri,
         string memory title,
         string memory authors,
-        uint256 publicationDate,
+        uint32 publicationDate,
         string memory doi,
+        string memory url,
+        string memory imageUrl,
         string memory description,
         string memory license,
         string memory field,
         string memory version,
         string memory externalUrl
-    ) public onlyOwner returns (uint256) {
+    ) external onlyOwner returns (uint256) {
         uint256 tokenId = _nextTokenId++;
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
@@ -75,10 +107,12 @@ contract PublicationNFT is ERC721, ERC721URIStorage, Ownable {
             authors: authors,
             publicationDate: publicationDate,
             doi: doi,
+            url: url,
+            imageUrl: imageUrl,
             description: description,
             license: license,
-            field: field,
-            version: version,
+            field: stringToBytes32(field),
+            version: stringToBytes32(version),
             externalUrl: externalUrl
         });
 
@@ -92,7 +126,7 @@ contract PublicationNFT is ERC721, ERC721URIStorage, Ownable {
      * @param tokenId The token ID
      */
     function getPublication(uint256 tokenId)
-        public
+        external
         view
         returns (PublicationMetadata memory)
     {

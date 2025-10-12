@@ -76,7 +76,7 @@ if ! validate_string "$AUTHORS"; then
 fi
 
 # Get publication date
-read -p "Enter Publication Date (Unix timestamp in milliseconds): " PUBLICATION_DATE
+read -p "Enter Publication Date (Unix timestamp in seconds): " PUBLICATION_DATE
 if ! validate_number "$PUBLICATION_DATE"; then
     echo "Error: Publication date must be a valid number"
     exit 1
@@ -172,7 +172,7 @@ sui client call \
   --args \
     "$TITLE" \
     "$AUTHORS" \
-    "$PUBLICATION_DATE" \
+    "$((PUBLICATION_DATE * 1000))" \
     "$DOI" \
     "$METADATA_URL" \
     "$IMAGE_URL" \

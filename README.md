@@ -13,7 +13,7 @@ This repository contains NFT smart contracts for published works (books, article
 
 ```
 publication-nft/
-├── ethereum/               # Ethereum ERC-721 smart contracts
+├── ethereum/              # Ethereum ERC-721 smart contracts
 │   ├── contracts/         # Solidity smart contracts
 │   ├── scripts/           # Deployment scripts
 │   ├── test/              # Test files
@@ -100,6 +100,8 @@ const tx = await publicationNFT.mintPublication(
   "978-0-7432-7356-5"
 );
 ```
+
+**Mainnet Contract Address:** `0xBfeA7120A701625B5438ed9A3f06F3BC471DB399`
 
 ### Sui Setup
 
@@ -208,6 +210,43 @@ cd sui
 sui move test
 ```
 
+## Simple Minting on Ethereum and Sui
+
+### Ethereum Minting
+
+For a quick mint on Ethereum mainnet:
+
+1. Set up your environment:
+
+   ```bash
+   cd ethereum
+   cp .env.example .env
+   # Edit .env with your PRIVATE_KEY and MAINNET_RPC_URL
+   ```
+
+2. Use the interactive minting script:
+
+   ```bash
+   npx hardhat run scripts/mint-interactive.js --network mainnet
+   ```
+
+The script will default to the deployed mainnet contract and prompt for all publication details.
+
+### Sui Minting
+
+For a quick mint on Sui mainnet:
+
+1. Ensure you have Sui CLI and test SUI tokens
+
+2. Use the interactive minting script:
+
+   ```bash
+   cd sui
+   ./scripts/mint-interactive.sh
+   ```
+
+The script will prompt for all publication details and mint the NFT on the Sui network.
+
 ## Environment Variables
 
 Create a `.env` file in the `ethereum/` directory for sensitive data:
@@ -221,12 +260,9 @@ MINT_SAMPLE=false
 
 **⚠️ Never commit your `.env` file to version control!**
 
-## Security Considerations
+## Usage of AI
 
-- Always use a hardware wallet or secure key management for mainnet deployments
-- Test thoroughly on testnets before mainnet deployment
-- Consider getting a professional audit for production use
-- Keep dependencies up to date for security patches
+I used GitHub Copilot to assist in writing and optimizing smart contract code and scripts.
 
 ## License
 

@@ -27,11 +27,11 @@ async function main() {
 
   // Example publication data
   const publicationData = {
-    uri: "ipfs://QmExampleHash123",
     title: "Example Publication",
     authors: "John Doe",
-    publicationDate: Math.floor(Date.now() / 1000),
+    publicationDate: Math.floor(Date.now() / 1000), // seconds
     doi: "10.1000/example-doi",
+    imageUrl: "https://image.example.com/cover.jpg",
     description: "Example description",
     license: "CC-BY-4.0",
     field: "Computer Science",
@@ -47,22 +47,24 @@ async function main() {
     new Date(publicationData.publicationDate * 1000).toISOString()
   );
   console.log("  DOI:", publicationData.doi);
+  console.log("  Image URL:", publicationData.imageUrl);
   console.log("  Description:", publicationData.description);
   console.log("  License:", publicationData.license);
   console.log("  Field:", publicationData.field);
   console.log("  Version:", publicationData.version);
   console.log("  External URL:", publicationData.externalUrl);
-  console.log("  Metadata URI:", publicationData.uri);
 
   // Mint the NFT
   console.log("\nMinting...");
   const tx = await publicationNFT.mintPublication(
     recipientAddress,
-    publicationData.uri,
+    "https://metadata.example.com", // uri - metadata URI
     publicationData.title,
     publicationData.authors,
-    publicationData.publicationDate,
+    Math.floor(Date.now() / 1000), // publicationDate in seconds
     publicationData.doi,
+    "https://metadata.example.com", // url - metadata URL
+    publicationData.imageUrl,
     publicationData.description,
     publicationData.license,
     publicationData.field,

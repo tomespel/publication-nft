@@ -32,6 +32,8 @@ describe("PublicationNFT", function () {
       const authors = "Test Author";
       const publicationDate = Math.floor(Date.now() / 1000);
       const doi = "10.1000/test-doi";
+      const url = "https://metadata.example.com";
+      const imageUrl = "https://image.example.com/cover.jpg";
       const description = "Test description";
       const license = "CC-BY-4.0";
       const field = "Computer Science";
@@ -46,6 +48,8 @@ describe("PublicationNFT", function () {
           authors,
           publicationDate,
           doi,
+          url,
+          imageUrl,
           description,
           license,
           field,
@@ -57,7 +61,6 @@ describe("PublicationNFT", function () {
         .withArgs(0, addr1.address, title, authors);
 
       expect(await publicationNFT.ownerOf(0)).to.equal(addr1.address);
-      expect(await publicationNFT.tokenURI(0)).to.equal(uri);
     });
 
     it("Should store publication metadata correctly", async function () {
@@ -66,6 +69,8 @@ describe("PublicationNFT", function () {
       const authors = "Test Author";
       const publicationDate = Math.floor(Date.now() / 1000);
       const doi = "10.1000/test-doi";
+      const url = "https://metadata.example.com";
+      const imageUrl = "https://image.example.com/cover.jpg";
       const description = "Test description";
       const license = "CC-BY-4.0";
       const field = "Computer Science";
@@ -79,6 +84,8 @@ describe("PublicationNFT", function () {
         authors,
         publicationDate,
         doi,
+        url,
+        imageUrl,
         description,
         license,
         field,
@@ -91,10 +98,12 @@ describe("PublicationNFT", function () {
       expect(publication.authors).to.equal(authors);
       expect(publication.publicationDate).to.equal(publicationDate);
       expect(publication.doi).to.equal(doi);
+      expect(publication.url).to.equal(url);
+      expect(publication.imageUrl).to.equal(imageUrl);
       expect(publication.description).to.equal(description);
       expect(publication.license).to.equal(license);
-      expect(publication.field).to.equal(field);
-      expect(publication.version).to.equal(version);
+      expect(publication.field).to.equal(ethers.encodeBytes32String(field));
+      expect(publication.version).to.equal(ethers.encodeBytes32String(version));
       expect(publication.externalUrl).to.equal(externalUrl);
     });
 
@@ -109,6 +118,8 @@ describe("PublicationNFT", function () {
             "Test Author",
             Math.floor(Date.now() / 1000),
             "10.1000/test-doi",
+            "https://metadata.example.com",
+            "https://image.example.com/cover.jpg",
             "Test description",
             "CC-BY-4.0",
             "Computer Science",
@@ -125,18 +136,32 @@ describe("PublicationNFT", function () {
   describe("Token URI", function () {
     it("Should return correct token URI", async function () {
       const uri = "ipfs://QmTestHash";
+      const title = "Test Book";
+      const authors = "Test Author";
+      const publicationDate = Math.floor(Date.now() / 1000);
+      const doi = "10.1000/test-doi";
+      const url = "https://metadata.example.com";
+      const imageUrl = "https://image.example.com/cover.jpg";
+      const description = "Test description";
+      const license = "CC-BY-4.0";
+      const field = "Computer Science";
+      const version = "1.0";
+      const externalUrl = "https://example.com/paper";
+
       await publicationNFT.mintPublication(
         addr1.address,
         uri,
-        "Test Book",
-        "Test Author",
-        Math.floor(Date.now() / 1000),
-        "10.1000/test-doi",
-        "Test description",
-        "CC-BY-4.0",
-        "Computer Science",
-        "1.0",
-        "https://example.com/paper"
+        title,
+        authors,
+        publicationDate,
+        doi,
+        url,
+        imageUrl,
+        description,
+        license,
+        field,
+        version,
+        externalUrl
       );
 
       expect(await publicationNFT.tokenURI(0)).to.equal(uri);

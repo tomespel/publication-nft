@@ -6,7 +6,9 @@
     "compile": "hardhat compile",
     "test": "hardhat test",
     "deploy:localhost": "hardhat run scripts/deploy.js --network localhost",
-    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia"
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
+    "deploy:mainnet": "hardhat run scripts/deploy.js --network mainnet",
+    "estimate-cost": "hardhat run scripts/estimate-cost.js --network mainnet"
   },
   "keywords": [
     "ethereum",
@@ -20,6 +22,9 @@
     "hardhat": "^2.19.0"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^5.0.0"
+    "@ethereumjs/wallet": "^10.0.0",
+    "@openzeppelin/contracts": "^5.0.0",
+    "bip39": "^3.1.0",
+    "dotenv": "^17.2.3"
   }
 }
