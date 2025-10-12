@@ -7,7 +7,7 @@ Provide an NFT implementation of published works on multiple blockchains.
 This repository contains NFT smart contracts for published works (books, articles, etc.) deployed on two blockchain platforms:
 
 1. **Ethereum**: ERC-721 implementation using OpenZeppelin and Hardhat
-2. **SUI**: Move smart contract for NFT functionality
+2. **Sui**: Move smart contract for NFT functionality
 
 ## Repository Structure
 
@@ -36,7 +36,7 @@ publication-nft/
 - **Access Control**: Owner-only minting functionality
 - **Comprehensive Testing**: Full test suite using Hardhat
 
-### SUI (Move)
+### Sui (Move)
 
 - **Native SUI NFT**: Implements SUI's object model for NFTs
 - **Rich Metadata**: Stores title, author, publication date, ISBN, and URLs
@@ -101,7 +101,7 @@ const tx = await publicationNFT.mintPublication(
 );
 ```
 
-### SUI Setup
+### Sui Setup
 
 #### Prerequisites
 
@@ -130,20 +130,28 @@ sui client publish --gas-budget 100000000
 #### Usage Example
 
 ```bash
-# Mint a new publication NFT
+# Mint a new publication NFT (manual CLI)
 sui client call \
-  --package <PACKAGE_ID> \
+  --package 0x58938c4d77a16c5baf8a7267ac0edbeee150658803d50b0222cf03e5d8cad45e \
   --module publication_nft \
   --function mint \
   --args \
     "The Great Gatsby" \
     "F. Scott Fitzgerald" \
     1234567890000 \
-    "978-0-7432-7356-5" \
+    "10.1000/great-gatsby" \
     "https://ipfs.io/ipfs/QmYourMetadataHash" \
     "https://ipfs.io/ipfs/QmYourImageHash" \
+    "A classic American novel about the Jazz Age." \
+    "CC-BY-4.0" \
+    "Literature" \
+    "1.0" \
+    "https://example.com/paper" \
     <RECIPIENT_ADDRESS> \
-  --gas-budget 10000000
+  --gas-budget 100000000
+
+# Or use the interactive script (recommended)
+./sui/scripts/mint-interactive.sh
 ```
 
 ## Smart Contract Details
@@ -151,23 +159,26 @@ sui client call \
 ### Ethereum Contract: PublicationNFT.sol
 
 Key functions:
-- `mintPublication()`: Mint a new publication NFT with metadata
-- `getPublication()`: Retrieve publication metadata by token ID
-- `tokenURI()`: Get the token URI for a given token ID
 
-### SUI Contract: publication_nft.move
+- `mintPublication(to, uri, title, authors, publicationDate, doi, description, license, field, version, externalUrl)`
+- `getPublication(tokenId)`
+- `tokenURI(tokenId)`
+
+
+### Sui Contract: publication_nft.move
 
 Key functions:
-- `mint()`: Mint a new publication NFT
-- `transfer_nft()`: Transfer an NFT to a new owner
-- `burn()`: Burn an NFT
-- Getter functions: `title()`, `author()`, `publication_date()`, `isbn()`, `url()`, `image_url()`
 
-## Testing
+- `mint(title, authors, publication_date, doi, url, image_url, description, license, field, version, external_url, recipient, ctx)`
+- `transfer_nft(nft, recipient, ctx)`
+- `burn(nft, ctx)`
+- Getter functions: `title()`, `authors()`, `publication_date()`, `doi()`, `url()`, `image_url()`, `description()`, `license()`, `field()`, `version()`, `external_url()`
+
 
 ### Ethereum Tests
 
 The Ethereum tests cover:
+
 - Contract deployment
 - NFT minting
 - Metadata storage and retrieval
@@ -175,20 +186,23 @@ The Ethereum tests cover:
 - Token URI functionality
 
 Run tests:
+
 ```bash
 cd ethereum
 npm test
 ```
 
-### SUI Tests
+### Sui Tests
 
-The SUI tests cover:
+The Sui tests cover:
+
 - NFT minting
 - NFT transfer
 - NFT burning
 - Metadata verification
 
 Run tests:
+
 ```bash
 cd sui
 sui move test
@@ -198,7 +212,7 @@ sui move test
 
 Create a `.env` file in the `ethereum/` directory for sensitive data:
 
-```
+```ini
 SEPOLIA_RPC_URL=https://sepolia.infura.io/v3/your-project-id
 MAINNET_RPC_URL=https://mainnet.infura.io/v3/your-project-id
 PRIVATE_KEY=your-private-key-here

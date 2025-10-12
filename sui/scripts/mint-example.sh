@@ -3,32 +3,32 @@
 # Example script demonstrating how to mint a Publication NFT on SUI
 # 
 # Usage:
-# ./scripts/mint-example.sh <package-id> <recipient-address>
+# ./scripts/mint-example.sh <recipient-address>
 
-PACKAGE_ID=$1
-RECIPIENT_ADDRESS=$2
+PACKAGE_ID=0x58938c4d77a16c5baf8a7267ac0edbeee150658803d50b0222cf03e5d8cad45e
+RECIPIENT_ADDRESS=$1
 
-if [ -z "$PACKAGE_ID" ] || [ -z "$RECIPIENT_ADDRESS" ]; then
-    echo "Usage: ./scripts/mint-example.sh <package-id> <recipient-address>"
+if [ -z "$RECIPIENT_ADDRESS" ]; then
+    echo "Usage: ./scripts/mint-example.sh <recipient-address>"
     exit 1
 fi
 
-echo "Minting Publication NFT on SUI..."
+echo "Minting Publication NFT on SUI Mainnet..."
 echo "Package ID: $PACKAGE_ID"
 echo "Recipient Address: $RECIPIENT_ADDRESS"
 echo ""
 
 # Example publication data
-TITLE="The Art of Computer Programming"
-AUTHORS="Donald Knuth"
+TITLE="New Contracts on Blockchains"
+AUTHORS="John Doe, Jane Smith"
 PUBLICATION_DATE=1234567890000
-DOI="10.1000/art-of-programming"
+DOI="10.1000/new-contracts-on-blockchains"
 METADATA_URL="https://ipfs.io/ipfs/QmExampleMetadataHash"
 IMAGE_URL="https://ipfs.io/ipfs/QmExampleImageHash"
-DESCRIPTION="A comprehensive guide to computer programming algorithms and data structures."
+DESCRIPTION="An example NFT."
 LICENSE="CC-BY-4.0"
 FIELD="Computer Science"
-VERSION="1.0"
+VERSION="1"
 EXTERNAL_URL="https://example.com/paper"
 
 echo "Publication Details:"
@@ -64,7 +64,7 @@ sui client call \
     "$VERSION" \
     "$EXTERNAL_URL" \
     "$RECIPIENT_ADDRESS" \
-  --gas-budget 10000000
+  --gas-budget 100000000
 
 echo ""
 echo "✅ Mint transaction submitted!"
