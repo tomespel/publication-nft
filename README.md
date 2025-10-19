@@ -216,21 +216,55 @@ sui move test
 
 For a quick mint on Ethereum mainnet:
 
-1. Set up your environment:
+1. **Set up your environment:**
 
    ```bash
    cd ethereum
-   cp .env.example .env
-   # Edit .env with your PRIVATE_KEY and MAINNET_RPC_URL
+   # Edit .env with your wallet credentials
+   # You can use either PRIVATE_KEY (without 0x prefix) or SEED_PHRASE
+
+   Example `.env` configuration:
+
+   ```ini
+   MAINNET_RPC_URL=https://mainnet.infura.io/v3/your-project-id
+   PRIVATE_KEY=your-private-key-here-without-0x
+   # OR
+   # SEED_PHRASE=your twelve or twenty four word seed phrase
    ```
 
-2. Use the interactive minting script:
+2. **Prepare your publication data:**
+
+   You'll need the following information ready:
+   - **Recipient Address**: Ethereum address to receive the NFT (defaults to your wallet)
+   - **Title**: Publication title
+   - **Authors**: Comma-separated list of authors
+   - **Publication Date**: Unix timestamp in seconds (e.g., `1704038400` for Jan 1, 2024)
+     - Get current timestamp: `date +%s`
+     - For specific date: `date -d "2024-01-01" +%s`
+   - **DOI**: Digital Object Identifier (e.g., `10.1000/example.doi`)
+   - **Metadata URL**: IPFS or HTTP link to JSON metadata (can be same as external URL)
+   - **Image URL**: Cover image URL (IPFS or HTTP)
+   - **Description**: Abstract or summary
+   - **License**: e.g., "CC-BY-4.0" or "MIT"
+   - **Field**: Field of study (max 32 characters)
+   - **Version**: Version string (max 32 characters)
+   - **External URL**: Link to the full publication
+
+3. **Run the interactive minting script:**
 
    ```bash
    npx hardhat run scripts/mint-interactive.js --network mainnet
    ```
 
-The script will default to the deployed mainnet contract and prompt for all publication details.
+   The script will:
+   - Use your configured credentials or prompt for a seed phrase
+   - Default to the deployed mainnet contract (`0xBfeA7120A701625B5438ed9A3f06F3BC471DB399`)
+   - Prompt for all publication details with validation
+   - Show gas cost estimates
+   - Ask for confirmation before minting
+   - Display transaction hash and token ID upon success
+
+**Note:** If you don't set credentials in `.env`, the script will prompt you to enter your seed phrase securely.
 
 ### Sui Minting
 

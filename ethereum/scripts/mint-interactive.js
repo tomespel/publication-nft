@@ -222,8 +222,19 @@ async function main() {
   // Setup wallet credentials if needed
   const walletAddress = await setupWalletCredentials();
 
-  // Get the signer from Hardhat (this will use the correct network)
-  const [signer] = await hre.ethers.getSigners();
+  // Get the signer
+  let signer;
+  if (process.env.PRIVATE_KEY) {
+    signer = new ethers.Wallet(process.env.PRIVATE_KEY, hre.ethers.provider);
+  } else {
+    const signers = await hre.ethers.getSigners();
+    if (signers.length === 0) {
+      throw new Error(
+        "No signer available. Set PRIVATE_KEY or SEED_PHRASE in environment."
+      );
+    }
+    signer = signers[0];
+  }
   console.log(
     "Using",
     hre.network.name,
